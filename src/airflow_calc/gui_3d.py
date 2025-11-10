@@ -297,13 +297,17 @@ class Airflow3DGUI:
             ax.zaxis.pane.fill = False
             ax.grid(True, alpha=0.2, color=self.colors['accent'])
             ax.tick_params(colors=self.colors['fg'], labelsize=8)
-            for spine in ['x', 'y', 'z']:
-                ax.spines[spine].set_color(self.colors['fg'])
+            # Set pane edge colors
+            ax.xaxis.pane.set_edgecolor(self.colors['fg'])
+            ax.yaxis.pane.set_edgecolor(self.colors['fg'])
+            ax.zaxis.pane.set_edgecolor(self.colors['fg'])
 
         self.ax_pressure.set_facecolor(self.colors['light'])
         self.ax_pressure.tick_params(colors=self.colors['fg'])
         self.ax_pressure.spines['bottom'].set_color(self.colors['fg'])
         self.ax_pressure.spines['left'].set_color(self.colors['fg'])
+        self.ax_pressure.spines['top'].set_color(self.colors['fg'])
+        self.ax_pressure.spines['right'].set_color(self.colors['fg'])
 
         self.fig.tight_layout(pad=2.0)
 
