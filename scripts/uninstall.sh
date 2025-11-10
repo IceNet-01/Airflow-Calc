@@ -105,13 +105,32 @@ remove_installation_directory() {
 }
 
 remove_wrapper_script() {
-    print_step "Removing wrapper script..."
+    print_step "Removing wrapper scripts..."
 
+    local removed_count=0
+
+    # Remove CLI wrapper
     if [ -f "$WRAPPER_SCRIPT" ]; then
         rm -f "$WRAPPER_SCRIPT"
-        print_success "Wrapper script removed"
+        removed_count=$((removed_count + 1))
+    fi
+
+    # Remove 2D GUI wrapper
+    if [ -f "${BIN_DIR}/airflow-calc-gui" ]; then
+        rm -f "${BIN_DIR}/airflow-calc-gui"
+        removed_count=$((removed_count + 1))
+    fi
+
+    # Remove 3D GUI wrapper
+    if [ -f "${BIN_DIR}/airflow-calc-3d" ]; then
+        rm -f "${BIN_DIR}/airflow-calc-3d"
+        removed_count=$((removed_count + 1))
+    fi
+
+    if [ $removed_count -gt 0 ]; then
+        print_success "Removed $removed_count wrapper script(s)"
     else
-        print_info "Wrapper script not found (already removed)"
+        print_info "No wrapper scripts found (already removed)"
     fi
 }
 
@@ -198,13 +217,33 @@ verify_uninstall() {
         ISSUES=$((ISSUES + 1))
     fi
 
+    # Check all wrapper scripts
     if [ -f "$WRAPPER_SCRIPT" ]; then
-        print_error "Wrapper script still exists"
+        print_error "CLI wrapper script still exists"
         ISSUES=$((ISSUES + 1))
     fi
 
+    if [ -f "${BIN_DIR}/airflow-calc-gui" ]; then
+        print_error "2D GUI wrapper script still exists"
+        ISSUES=$((ISSUES + 1))
+    fi
+
+    if [ -f "${BIN_DIR}/airflow-calc-3d" ]; then
+        print_error "3D GUI wrapper script still exists"
+        ISSUES=$((ISSUES + 1))
+    fi
+
+    # Check if commands are still available
     if command -v airflow-calc &> /dev/null; then
         print_warning "airflow-calc command still available (may be in another location)"
+    fi
+
+    if command -v airflow-calc-gui &> /dev/null; then
+        print_warning "airflow-calc-gui command still available (may be in another location)"
+    fi
+
+    if command -v airflow-calc-3d &> /dev/null; then
+        print_warning "airflow-calc-3d command still available (may be in another location)"
     fi
 
     if [ $ISSUES -eq 0 ]; then

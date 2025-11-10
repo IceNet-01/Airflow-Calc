@@ -126,6 +126,12 @@ install_package() {
     cp requirements.txt "$INSTALL_DIR/"
     cp LICENSE "$INSTALL_DIR/" 2>/dev/null || true
 
+    # Copy documentation
+    cp -r docs "$INSTALL_DIR/" 2>/dev/null || true
+    cp -r examples "$INSTALL_DIR/" 2>/dev/null || true
+    cp README.md "$INSTALL_DIR/" 2>/dev/null || true
+    cp FEATURES.md "$INSTALL_DIR/" 2>/dev/null || true
+
     cd "$INSTALL_DIR"
 
     # Create virtual environment
@@ -151,11 +157,12 @@ install_package() {
 }
 
 create_wrapper_script() {
-    print_step "Creating wrapper script..."
+    print_step "Creating wrapper scripts..."
 
+    # CLI wrapper
     cat > "$BIN_DIR/airflow-calc" << 'EOF'
 #!/bin/bash
-# Wrapper script for Cybertruck Airflow Calculator
+# Wrapper script for Cybertruck Airflow Calculator CLI
 
 INSTALL_DIR="${HOME}/.local/airflow-calc"
 
@@ -171,7 +178,45 @@ EOF
 
     chmod +x "$BIN_DIR/airflow-calc"
 
-    print_success "Wrapper script created"
+    # 2D GUI wrapper
+    cat > "$BIN_DIR/airflow-calc-gui" << 'EOF'
+#!/bin/bash
+# Wrapper script for Cybertruck Airflow Calculator 2D GUI
+
+INSTALL_DIR="${HOME}/.local/airflow-calc"
+
+if [ ! -d "$INSTALL_DIR" ]; then
+    echo "Error: Airflow Calculator is not installed."
+    echo "Please run the installer first."
+    exit 1
+fi
+
+source "$INSTALL_DIR/venv/bin/activate"
+python -m airflow_calc.gui "$@"
+EOF
+
+    chmod +x "$BIN_DIR/airflow-calc-gui"
+
+    # 3D GUI wrapper
+    cat > "$BIN_DIR/airflow-calc-3d" << 'EOF'
+#!/bin/bash
+# Wrapper script for Cybertruck Airflow Calculator 3D GUI
+
+INSTALL_DIR="${HOME}/.local/airflow-calc"
+
+if [ ! -d "$INSTALL_DIR" ]; then
+    echo "Error: Airflow Calculator is not installed."
+    echo "Please run the installer first."
+    exit 1
+fi
+
+source "$INSTALL_DIR/venv/bin/activate"
+python -m airflow_calc.gui_3d "$@"
+EOF
+
+    chmod +x "$BIN_DIR/airflow-calc-3d"
+
+    print_success "Wrapper scripts created (CLI, 2D GUI, 3D GUI)"
 }
 
 update_path() {
@@ -226,12 +271,23 @@ save_version() {
 run_verification() {
     print_step "Verifying installation..."
 
+    # Test CLI
     if "$BIN_DIR/airflow-calc" --version &> /dev/null; then
-        print_success "Installation verified successfully"
+        print_success "CLI verified"
     else
-        print_error "Installation verification failed"
+        print_error "CLI verification failed"
         exit 1
     fi
+
+    # Check GUI wrappers exist
+    if [ -x "$BIN_DIR/airflow-calc-gui" ] && [ -x "$BIN_DIR/airflow-calc-3d" ]; then
+        print_success "GUI wrappers verified"
+    else
+        print_error "GUI wrapper verification failed"
+        exit 1
+    fi
+
+    print_success "Installation verified successfully"
 }
 
 print_completion_message() {
@@ -242,14 +298,19 @@ print_completion_message() {
     echo "============================================================"
     echo -e "${NC}"
     echo ""
-    echo -e "${BOLD}Quick Start:${NC}"
+    echo -e "${BOLD}Quick Start - Command Line:${NC}"
     echo -e "  ${CYAN}airflow-calc -s 65 --unit mph${NC}       # Analyze at 65 mph"
     echo -e "  ${CYAN}airflow-calc --range 0 120 --unit kmh${NC} # Speed range analysis"
     echo -e "  ${CYAN}airflow-calc --show-specs${NC}          # Show Cybertruck specs"
     echo -e "  ${CYAN}airflow-calc --help${NC}                # Show all options"
     echo ""
+    echo -e "${BOLD}Quick Start - Graphical Interfaces:${NC}"
+    echo -e "  ${CYAN}airflow-calc-gui${NC}                   # Launch 2D GUI"
+    echo -e "  ${CYAN}airflow-calc-3d${NC}                    # Launch 3D GUI (Recommended!)"
+    echo ""
     echo -e "${BOLD}Documentation:${NC}"
-    echo -e "  Run: ${CYAN}cat $INSTALL_DIR/docs/USER_GUIDE.md${NC}"
+    echo -e "  ${CYAN}cat docs/USER_GUIDE.md${NC}            # Full user guide"
+    echo -e "  ${CYAN}cat FEATURES.md${NC}                   # Complete feature list"
     echo ""
     echo -e "${BOLD}Installation location:${NC}"
     echo -e "  $INSTALL_DIR"
