@@ -10,14 +10,16 @@ A comprehensive aerodynamic analysis tool for calculating airflow properties and
 
 ## ✨ Features
 
-- **🖥️ Dual Interface**: Command-line for power users, GUI for visual analysis
+- **🖥️ Triple Interface**: Command-line, 2D GUI, and stunning 3D visualization
+- **🎨 Professional 3D Graphics**: Interactive 3D Cybertruck model with airflow streamlines
 - **📊 Comprehensive Analysis**: Drag force, lift force, power requirements, Reynolds number
 - **🌡️ Environmental Factors**: Adjustable altitude and temperature settings
 - **📈 Speed Range Analysis**: Analyze performance across multiple speeds with graphs
 - **🎯 Multiple Units**: Support for m/s, km/h, and mph
 - **🚙 All Variants**: Single motor, dual motor, and tri-motor configurations
 - **💾 Data Export**: JSON export for further analysis
-- **🎨 Beautiful Visualizations**: Real-time plots and graphs
+- **💨 Airflow Visualization**: Real-time 3D streamlines and pressure distribution
+- **🔄 Animation**: Smooth rotation and dynamic visualization
 - **🔧 Easy Installation**: One-command installer with update and uninstall support
 
 ## 📋 Table of Contents
@@ -58,8 +60,11 @@ airflow-calc -s 65 --unit mph
 # Quick summary at 100 km/h
 airflow-calc -q -s 100 --unit kmh
 
-# Launch the GUI
+# Launch the 2D GUI
 airflow-calc-gui
+
+# Launch the stunning 3D GUI (Recommended!)
+airflow-calc-3d
 ```
 
 ## 📦 Installation
@@ -227,26 +232,45 @@ $ airflow-calc -s 70 --unit mph \
     -o complete_analysis.json
 ```
 
-## 🎨 GUI Interface
+## 🎨 GUI Interfaces
 
-### Launching the GUI
+### 2D GUI (Classic View)
 
 ```bash
 airflow-calc-gui
 ```
 
-### GUI Features
+**Features:**
+- Interactive controls and sliders
+- Real-time 2D graphs
+- Multiple plot views (drag, power, lift, Reynolds)
+- Export options (PNG, JSON)
+- Vehicle configuration
+- Environmental settings
 
-- **Interactive Controls**: Sliders and input fields for all parameters
-- **Real-time Visualization**: Live graphs that update as you adjust values
-- **Multiple Plots**:
-  - Drag force vs speed
-  - Power requirements vs speed
-  - Lift force analysis
-  - Reynolds number evolution
-- **Export Options**: Save graphs as PNG, export data as JSON
-- **Vehicle Selection**: Switch between Cybertruck variants
-- **Environmental Settings**: Adjust altitude and temperature with visual feedback
+### 🌟 3D GUI (Professional View) - RECOMMENDED!
+
+```bash
+airflow-calc-3d
+```
+
+**Advanced Features:**
+- **🎨 Stunning 3D Cybertruck Model**: Accurate angular design rendered in 3D
+- **💨 Airflow Streamlines**: Visualize air flowing around the vehicle
+- **📊 Pressure Distribution**: See pressure coefficients along the body
+- **🔄 Multiple View Angles**: Main view, top view, side view
+- **🎬 Animation Mode**: Smooth rotation for presentations
+- **⚙️ Real-time Updates**: Instant visual feedback on parameter changes
+- **🎯 Interactive 3D**: Click and drag to rotate, zoom, and explore
+- **💾 High-Res Export**: Save 3D visualizations as PNG/PDF
+- **🌈 Color-coded Flow**: Velocity-based streamline coloring
+- **📈 Live Metrics**: Real-time analysis results displayed alongside 3D view
+
+The 3D GUI provides a professional, immersive experience perfect for:
+- 🎓 Educational demonstrations
+- 📊 Technical presentations
+- 🔬 Detailed aerodynamic analysis
+- 🎨 Visual exploration of airflow patterns
 
 ### GUI Screenshot
 

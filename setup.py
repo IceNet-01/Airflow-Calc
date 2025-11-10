@@ -44,6 +44,7 @@ setup(
         'console_scripts': [
             'airflow-calc=airflow_calc.cli:main',
             'airflow-calc-gui=airflow_calc.gui:main',
+            'airflow-calc-3d=airflow_calc.gui_3d:main',
         ],
     },
     classifiers=[
